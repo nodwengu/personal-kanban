@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Personal Kanban</title>
+
+  <!-- CSS  -->
+  <link href="css/animate.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.11/handlebars.min.js"></script>
+</head>
+<body>
+ 
+    <!-- <nav class="" role="navigation">
+        <div class="nav-wrapper container">
+    
+        <ul class="right hide-on-med-and-down">
+            <li class="addNewBtn"><a href="#"><i class="material-icons left">add_box</i>ADD NEW</a></li>
+            <li class="showCart">
+                <a href="#">Projects</a>
+            </li>
+        </ul> 
+        </div>
+    </nav> -->
+
+   <header>
+      <script type="text/x-handlebars-template" class="taskTemplate">
+        {{#if todoTasks}}
+            {{#each todoTasks}}
+            <div class="card">
+                <div class="card-action" style="display: flex">
+                    <!-- <a class="waves-effect waves-teal btn-flat left">{{id}}</a> -->
+                    <a class="waves-effect waves-teal btn-flat left">{{date}}</a>
+                    <a class="waves-effect waves-teal btn-flat right">{{status}}</a>
+                </div>
+                <div class="card-content">
+                <h5>{{name}}</h5>
+                <p>{{description}}</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn-small startTask" id="{{id}}">Start</a>
+                    <a class="waves-effect waves-light btn-small">Cancel</a>
+                    <a class="waves-effect waves-teal btn-flat right">{{date}}</a>
+                </div>
+            </div>
+            {{/each}} 
+        {{/if}}
+      </script>
+
+      <script type="text/x-handlebars-template" class="doingTaskTemplate">
+        {{#if doingTasks}}
+            {{#each doingTasks}}
+            <div class="card">
+                <div class="card-action" style="display: flex">
+                    <!-- <a class="waves-effect waves-teal btn-flat left">{{id}}</a> -->
+                    <a class="waves-effect waves-teal btn-flat left">{{date}}</a>
+                    <a class="waves-effect waves-teal btn-flat right">{{status}}</a>
+                </div>
+                <div class="card-content">
+                <h5>{{name}}</h5>
+                <p>{{description}}</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn-small startTask" id="{{id}}">Finish</a>
+                    <a class="waves-effect waves-light btn-small">Cancel</a>
+                    <a class="waves-effect waves-teal btn-flat right">{{date}}</a>
+                </div>
+            </div>
+            {{/each}} 
+        {{/if}}
+      </script>
+
+   </header>
+   
+   <div class="container" style="width: 90%;">
+      <div class="row" style="padding-top: 6rem;">
+    
+         <div class="col s12 m4">
+            <div>TO-DO</div>
+            <hr>
+            <div class="todo-tasks">
+            <!-- <div class="card">
+                <div class="card-action">
+                    <a class="waves-effect waves-teal btn-flat left">date</a>
+                    <a class="waves-effect waves-teal btn-flat right">status</a>
+                </div>
+                <div class="card-content">
+                  <p>To do is empty</p>
+                </div>
+                <div class="card-action">
+                    <a class="waves-effect waves-light btn-small">Start</a>
+                    <a class="waves-effect waves-light btn-small">Cancel</a>
+                </div>
+            </div> -->
+            </div>
+         </div>
+
+         <div class="col s12 m4">
+                <div>DOING</div>
+                <hr>
+                <div class="doing-tasks">
+                <!-- <div class="card">
+                    <div class="card-action">
+                        <a class="waves-effect waves-teal btn-flat left">date</a>
+                        <a class="waves-effect waves-teal btn-flat right">status</a>
+                    </div>
+                    <div class="card-content">
+                      <p>Setup Dev Environment</p>
+                    </div>
+                    <div class="card-action">
+                            <a class="waves-effect waves-light btn-small">Start</a>
+                            <a class="waves-effect waves-light btn-small">Cancel</a>
+                        </div>
+                  </div> -->
+                </div>
+         </div>
+
+         <div class="col s12 m4">
+                <div>DONE</div>
+                <hr>
+                <div class="card">
+                    <div class="card-action">
+                        <a class="waves-effect waves-teal btn-flat left">date</a>
+                        <a class="waves-effect waves-teal btn-flat right">status</a>
+                    </div>
+                    <div class="card-content">
+                      <p>Setup Dev Environment</p>
+                    </div>
+                    <div class="card-action">
+                        <a class="waves-effect waves-light btn-small">Close</a>
+                        <a class="waves-effect waves-light btn-small">Cancel</a>
+                    </div>
+                  </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="container addNew-wrapper animated fadeInUp" style="width: 90%;">
+      <div class="section">
+         <h4 class="header">Add New Task</h4>
+         <div class="">
+            <div class="row card horizontal">
+               <div class="col s7 m7">
+                    <div class="input-field">
+                        <label for="name">Name</label>
+                        <input id="name" type="text" class="validate">
+                    </div>
+                    <div class="input-field">
+                        <label for="description">Description</label>
+                        <input id="description" type="text" class="validate">
+                    </div>
+                   
+                    <div class="input-field">
+                        <label for="status">Status</label>
+                        <input id="status" type="text" class="validate">  
+                    </div>
+                    <div class="input-field">
+                        <label for="time">Time</label>
+                        <input id="time" type="text" class="validate">  
+                    </div>
+                    <div class="input-field">
+                        <label for="date">Date</label>
+                        <input id="date" type="date" class="validate" value="">  
+                    </div>
+                    <div class="">
+                        <a class="waves-effect btn" id="addBtn"><i class="material-icons left"></i>ADD</a>
+                    </div>
+                  
+               </div>
+               <div class="col s5 m5"></div>
+            </div>
+         </div>
+      </div>  
+   </div>
+
+  <!--  Scripts-->
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/init.js"></script>
+
+  <script src="js/personalKanban.js"></script>
+  <script src="js/script.js"></script>
+
+  </body>
+</html>
