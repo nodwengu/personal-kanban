@@ -1,75 +1,126 @@
-var addBtnElem = document.querySelector('#addBtn');
-var startTaskElem = document.querySelector('.todo-tasks');
+let data = [
+  {
+    name: 'Create a landing page',
+    description: 'landing page should show...',
+    status: 'Todo',
+    time: '12:00',
+    date: '21-05-2015',
+    id: 1
+  }
+]
 
-if(localStorage.getItem('todoTasks')) {
-   var todoTasks = JSON.parse(localStorage.getItem('todoTasks'));
-   let todoList = { todoTasks }
-   createHTML(todoList)
-} else {
-   todoTasks = []
-}
 
-if(localStorage.getItem('doingTasks')) {
-   var doingTasks = JSON.parse(localStorage.getItem('doingTasks'));
-   let doingList = { doingTasks }
-   createDoingHTML(doingList)
-} else {
-   doingTasks = []
+let addBtnElem = document.querySelector('#addBtn');
+let startTaskElem = document.querySelector('.todo-tasks');
+let finishTaskElem = document.querySelector('.doing-tasks');
+
+// if(localStorage.getItem('todoTasks')) {
+//    var todoTasks = JSON.parse(localStorage.getItem('todoTasks'));
+//    let todoList = { todoTasks }
+//    createHTML(todoList)
+// } else {
+//    todoTasks = []
+// }
+
+// if(localStorage.getItem('doingTasks')) {
+//    var doingTasks = JSON.parse(localStorage.getItem('doingTasks'));
+//    let doingList = { doingTasks }
+//    createDoingHTML(doingList)
+// } else {
+//    doingTasks = []
+// }
+//console.log(doingTasks)
+const createTaskInstance = createTask(data);
+
+if (data) {
+  createHTML({data})
 }
-console.log(doingTasks)
-const createTaskInstance = createTask();
 
 function storeTask() {
-   let name = document.querySelector('#name').value;
-   let description = document.querySelector('#description').value;
-   let status = document.querySelector('#status').value;
-   let time = document.querySelector('#time').value;
-   let date = document.querySelector('#date').value;
-   
-   createTaskInstance.setTask(name, description, status, time, date);
-   createTaskInstance.setTaskList();
+  let name = document.querySelector('#name').value;
+  let description = document.querySelector('#description').value;
+  let status = document.querySelector('#status').value;
+  let time = document.querySelector('#time').value;
+  let date = document.querySelector('#date').value;
 
-   let todoTasks = createTaskInstance.getTaskList();
-   let todos = { todoTasks }
-   createHTML(todos)
+  createTaskInstance.setTask(name, description, status, time, date);
 
-   localStorage.setItem('todoTasks', JSON.stringify(todoTasks))
+  let data = createTaskInstance.getTodoList();
 
+  createHTML({data})
 }
 
 function startTask(evt) {
-   if(evt.target.id) {
-      todoTasks.forEach(item => {
-         if(item.id == evt.target.id) {
-            item.status = "Doing";
-            createTaskInstance.setDoingList(item);
-            let doingTasks = createTaskInstance.getDoingList()
-            
-            localStorage.setItem('doingTasks', JSON.stringify(doingTasks))
-            createDoingHTML(doingTasks)
-         }
-      });
-   }
-   
-   
+  if (evt.target.id) {
+    data.forEach(item => {
+      if (item.id == evt.target.id) {
+        item.status = "Doing";
+      
+        createTaskInstance.setDoingList(item);
+        let doingTasks = createTaskInstance.getDoingList()
+       
+        createDoingHTML({doingTasks})
+
+        let index = data.findIndex( obj => {
+          return obj.id === evt.target.id;
+        })
+        data.splice(index, 1);
+        createHTML({data})
+      }
+    });
+    
+  }
 }
 
-function createHTML(tasks) {
-   let rawTemplate = document.querySelector('.taskTemplate').innerHTML;
-   let compiledTemplate = Handlebars.compile(rawTemplate);
-   let ourGeneratedHTML = compiledTemplate(tasks);
+ function finishTask(evt) {
+  if (evt.target.id) {
+    let doingTasks = createTaskInstance.getDoingList()
+  
+    doingTasks.forEach(item => {
+      if (item.id == evt.target.id) {
+        item.status = "Done";
+      
+        createTaskInstance.setDoneList(item);
+        let doneTasks = createTaskInstance.getDoneList()
+ 
+        createDoneHTML({doneTasks})
 
-   let cartItemsElem = document.querySelector('.todo-tasks');
-   cartItemsElem.innerHTML = ourGeneratedHTML;
+        let index = doneTasks.findIndex(function(obj){
+          return obj.id === evt.target.id;
+        })
+        data.splice(index, 1);
+        createDoingHTML({doneTasks})
+      }
+    });
+  }
+ }
+
+function createHTML(tasks) {
+
+  let rawTemplate = document.querySelector('.taskTemplate').innerHTML;
+  let compiledTemplate = Handlebars.compile(rawTemplate);
+  let ourGeneratedHTML = compiledTemplate(tasks);
+
+  let cartItemsElem = document.querySelector('.todo-tasks');
+  cartItemsElem.innerHTML = ourGeneratedHTML;
 }
 
 function createDoingHTML(tasks) {
-   let rawTemplate = document.querySelector('.doingTaskTemplate').innerHTML;
-   let compiledTemplate = Handlebars.compile(rawTemplate);
-   let ourGeneratedHTML = compiledTemplate(tasks);
+  let rawTemplate = document.querySelector('.doingTaskTemplate').innerHTML;
+  let compiledTemplate = Handlebars.compile(rawTemplate);
+  let ourGeneratedHTML = compiledTemplate(tasks);
 
-   let cartItemsElem = document.querySelector('.doing-tasks');
-   cartItemsElem.innerHTML = ourGeneratedHTML;
+  let cartItemsElem = document.querySelector('.doing-tasks');
+  cartItemsElem.innerHTML = ourGeneratedHTML;
+}
+
+function createDoneHTML(tasks) {
+  let rawTemplate = document.querySelector('.doneTaskTemplate').innerHTML;
+  let compiledTemplate = Handlebars.compile(rawTemplate);
+  let ourGeneratedHTML = compiledTemplate(tasks);
+
+  let cartItemsElem = document.querySelector('.done-tasks');
+  cartItemsElem.innerHTML = ourGeneratedHTML;
 }
 
 
@@ -77,7 +128,6 @@ addBtnElem.addEventListener('click', storeTask);
 
 startTaskElem.addEventListener('click', startTask);
 
-//  for (let i = 0; i < startTaskElem.length; i++) {
-//    let elem = startTaskElem[i];
-//    console.log(elem);
-//  }
+finishTaskElem.addEventListener('click', finishTask);
+
+finishTask

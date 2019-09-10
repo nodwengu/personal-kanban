@@ -1,43 +1,43 @@
+
 function createTask(data) {
    let name = "";
    let description = "";
    let status = "";
    let time = new Date;
    let date = new Date;
-   let id = 0;
+   let id = 1;
 
-   let taskList = data || []
-   let toDoList = [];
+   let toDoList = data || [];
    let doingList = [];
    let doneList = [];
 
    function setTask(theName, theDesc, theStatus, theTime, theDate) {
-     name = theName;
-     description = theDesc;
-     status = theStatus;
-     time = theTime;
-     date = theDate;
-     id++
-   }
-   function setTaskList() {
-      taskList.push({
+      name = theName;
+      description = theDesc;
+      status = theStatus;
+      time = theTime;
+      date = theDate;
+      id++;
+
+      toDoList.push({
          name,
          description,
          status,
          time,
          date,
-         time,
          id
       })
    }
-   function getTaskList() {
-     return taskList;
+  
+   function getTodoList() {
+     return toDoList;
    }
 
-   // function setToDoList(obj) {
-   //    toDoList.push(obj);
-   // }
    function setDoingList(obj) {
+      // if(doingList.length > 0) {
+      //    alert("You can work on only one task at a time!!");
+      //    return
+      // }
       doingList.push(obj);
    }
    function getDoingList() {
@@ -48,25 +48,19 @@ function createTask(data) {
       doneList.push(obj);
    }
 
-   // function setToDoList(obj) {
-   //    toDoList.push(obj);
-   // }
-   function setDoingList(obj) {
-      doingList.push(obj);
+   function getDoneList() {
+      return doneList;
    }
-   function setDoneList(obj) {
-      doneList.push(obj);
-   }
+  
 
    return {
       setTask,
-      setTaskList,
-      // setToDoList,
       setDoingList,
       setDoneList,
 
-      getTaskList,
-      getDoingList
+      getTodoList,
+      getDoingList,
+      getDoneList
 
       
    }
