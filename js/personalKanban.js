@@ -34,10 +34,10 @@ function createTask(data) {
    }
 
    function setDoingList(obj) {
-      // if(doingList.length > 0) {
-      //    alert("You can work on only one task at a time!!");
-      //    return
-      // }
+      if(doingList.length > 0) {
+         alert("You can work on only one task at a time!!");
+         return
+      }
       doingList.push(obj);
    }
    function getDoingList() {

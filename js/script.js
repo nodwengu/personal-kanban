@@ -51,26 +51,28 @@ function storeTask() {
 }
 
 function startTask(evt) {
+  let doingTasks = createTaskInstance.getDoingList();
   if (evt.target.id) {
     data.forEach(item => {
       if (item.id == evt.target.id) {
-        item.status = "Doing";
-      
-        createTaskInstance.setDoingList(item);
-        let doingTasks = createTaskInstance.getDoingList()
-       
-        createDoingHTML({doingTasks})
+        if(doingTasks.length <= 0) {
+          item.status = "Doing";
 
-        let index = data.findIndex( obj => {
-          return obj.id === evt.target.id;
-        })
-        data.splice(index, 1);
-        createHTML({data})
+          let index = data.findIndex( obj => {
+            return obj.id === evt.target.id;
+          })
+          data.splice(index, 1);
+          createHTML({data})
+        }
+
+        createTaskInstance.setDoingList(item);
+
+        createDoingHTML({doingTasks})
       }
     });
     
   }
-  console.log(data);
+  //console.log(data);
 }
 
  function finishTask(evt) {
