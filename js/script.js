@@ -70,9 +70,12 @@ function startTask(evt) {
     });
     
   }
+  console.log(data);
 }
 
  function finishTask(evt) {
+  let doneTasks = createTaskInstance.getDoneList()
+
   if (evt.target.id) {
     let doingTasks = createTaskInstance.getDoingList()
   
@@ -81,18 +84,19 @@ function startTask(evt) {
         item.status = "Done";
       
         createTaskInstance.setDoneList(item);
-        let doneTasks = createTaskInstance.getDoneList()
- 
+       
         createDoneHTML({doneTasks})
 
-        let index = doneTasks.findIndex(function(obj){
+        let index = doingTasks.findIndex(function(obj){
           return obj.id === evt.target.id;
         })
-        data.splice(index, 1);
+        doingTasks.splice(index, 1);
         createDoingHTML({doneTasks})
       }
     });
   }
+
+  console.log(createTaskInstance.getDoneList());
  }
 
 function createHTML(tasks) {
